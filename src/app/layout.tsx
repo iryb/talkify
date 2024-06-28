@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+"use client";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { MessagesProvider } from "@/context/messages";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,7 +12,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <MessagesProvider>
+        <body className={inter.className}>{children}</body>
+      </MessagesProvider>
     </html>
   );
 }

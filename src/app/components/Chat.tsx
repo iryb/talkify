@@ -1,10 +1,12 @@
 "use client";
-import React, { useState } from "react";
+import { MessagesContext } from "@/context/messages";
+import React, { useContext, useEffect, useState } from "react";
 
 export const Chat = () => {
   const listening = false;
   const [transcript, setTranscript] = useState<string>();
   const [response, setResponse] = useState<string>();
+  const messagesContext = useContext(MessagesContext);
 
   // const { mutate: sendMessage, isPending: isLoading } = useMutation({
   //     mutationFn: async (message: Message) => {
@@ -71,6 +73,12 @@ export const Chat = () => {
       console.log(event);
       setTranscript(input);
 
+      messagesContext.addMessage({
+        id: "2",
+        text: input,
+        isUserMessage: true,
+      });
+
       const response = await fetch("/api/message", {
         method: "POST",
         headers: {
@@ -85,7 +93,17 @@ export const Chat = () => {
 
       console.log(response)
 
-      setResponse(response.text);
+      messagesContext.addMessage({
+        id: "3",
+        text: response.text,
+        isUserMessage: false,
+      });
+
+      let utterance = new SpeechSynthesisUtterance(response.text);
+      utterance.lang = "en-US";
+
+      window.speechSynthesis.speak(utterance);
+
     };
 
     recognition.start();
@@ -98,8 +116,11 @@ export const Chat = () => {
       <p>Microphone: {listening ? "on" : "off"}</p>
       <button onClick={handleStart}>Start</button>
       <button onClick={handleStop}>Stop</button>
-      <p>{transcript}</p>
-      <p>Response: {response}</p>
+      {messagesContext.messages.map(({isUserMessage, text}, index) => (
+        <div key={index} style={{backgroundColor: (isUserMessage ? "grey" : "blue")}}>
+          <p>{text}</p>
+        </div>
+      ))}
     </div>
   );
 };
