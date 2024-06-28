@@ -4,22 +4,23 @@ import React, { useState } from "react";
 export const Chat = () => {
   const listening = false;
   const [transcript, setTranscript] = useState<string>();
+  const [response, setResponse] = useState<string>();
 
   // const { mutate: sendMessage, isPending: isLoading } = useMutation({
   //     mutationFn: async (message: Message) => {
-  //       const response = await fetch("/api/message", {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({ messages: [message] }),
-  //       });
+  // const response = await fetch("/api/message", {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify({ messages: [message] }),
+  // });
 
-  //       if (!response.ok) {
-  //         throw new Error();
-  //       }
+  // if (!response.ok) {
+  //   throw new Error();
+  // }
 
-  //       return response.body;
+  // return response.body;
   //     },
   //     onMutate(message) {
   //       addMessage(message);
@@ -64,11 +65,21 @@ export const Chat = () => {
     const SpeechRecognition =
       window.SpeechRecognition || window.webkitSpeechRecognition;
     const recognition = new SpeechRecognition();
-
-    recognition.onresult = function (event) {
+    recognition.onresult = async function (event) {
       const input = event.results[0][0].transcript;
+
+      console.log(event);
       setTranscript(input);
-      console.log("Confidence: " + event.results[0][0].confidence);
+
+      const response = await fetch("/api/message", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ messages: [transcript], langLevel: "b1" }),
+      }).then((res) => res.json());
+
+      setResponse(response);
     };
 
     recognition.start();
@@ -82,6 +93,7 @@ export const Chat = () => {
       <button onClick={handleStart}>Start</button>
       <button onClick={handleStop}>Stop</button>
       <p>{transcript}</p>
+      <p>Response: {response}</p>
     </div>
   );
 };
