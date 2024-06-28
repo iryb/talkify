@@ -1,9 +1,14 @@
+//@ts-nocheck
 import {
   ChatGPTMessage,
-  OpenAIStream,
-  OpenAIStreamPayload,
 } from "@/lib/openai-stream";
 import { MessageArraySchema } from "@/lib/validators/message";
+import { NextResponse } from "next/server";
+import OpenAI from "openai";
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+})
 
 export async function POST(req: Request) {
   const { messages, langLevel } = await req.json();
@@ -20,13 +25,15 @@ export async function POST(req: Request) {
     content: `You are English speaking partner. Start an engaging conversation. Use ${langLevel} language level in conversation.`,
   });
 
-  const payload: OpenAIStreamPayload = {
+  const payload = {
     model: "gpt-3.5-turbo",
     messages: outboundMessages,
-    stream: true,
+    stream: false,
   };
 
-  const stream = await OpenAIStream(payload);
+  const response = await openai.chat.completions.create(payload);
 
-  return new Response(stream);
+  return NextResponse.json({
+    text: response.choices[0].message.content
+  });
 }

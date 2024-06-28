@@ -76,10 +76,16 @@ export const Chat = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ messages: [transcript], langLevel: "b1" }),
+        body: JSON.stringify({ messages: [{
+          id: "123",
+          isUserMessage: true,
+          text: input,
+        }], langLevel: "b1" }),
       }).then((res) => res.json());
 
-      setResponse(response);
+      console.log(response)
+
+      setResponse(response.text);
     };
 
     recognition.start();
