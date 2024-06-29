@@ -1,14 +1,12 @@
 //@ts-nocheck
-import {
-  ChatGPTMessage,
-} from "@/lib/openai-stream";
+import { ChatGPTMessage } from "@/lib/openai-stream";
 import { MessageArraySchema } from "@/lib/validators/message";
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-})
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
 export async function POST(req: Request) {
   const { messages, langLevel } = await req.json();
@@ -34,6 +32,6 @@ export async function POST(req: Request) {
   const response = await openai.chat.completions.create(payload);
 
   return NextResponse.json({
-    text: response.choices[0].message.content
+    text: response.choices[0].message.content,
   });
 }
