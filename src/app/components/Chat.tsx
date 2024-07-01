@@ -1,11 +1,11 @@
 "use client";
 import { MessagesContext } from "@/context/messages";
 import React, { useContext, useEffect, useState } from "react";
+import { Message } from "./Message";
 
 export const Chat = () => {
   const listening = false;
   const [transcript, setTranscript] = useState<string>();
-  const [response, setResponse] = useState<string>();
   const messagesContext = useContext(MessagesContext);
 
   // const { mutate: sendMessage, isPending: isLoading } = useMutation({
@@ -117,12 +117,7 @@ export const Chat = () => {
       <button onClick={handleStart}>Start</button>
       <button onClick={handleStop}>Stop</button>
       {messagesContext.messages.map(({ isUserMessage, text }, index) => (
-        <div
-          key={index}
-          style={{ backgroundColor: isUserMessage ? "grey" : "blue" }}
-        >
-          <p>{text}</p>
-        </div>
+        <Message key={index} isUserMessage={isUserMessage} text={text} />
       ))}
     </div>
   );
