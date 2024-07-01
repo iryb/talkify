@@ -73,25 +73,26 @@ export const Chat = () => {
       console.log(event);
       setTranscript(input);
 
-      messagesContext.addMessage({
+      const newMessage = {
         id: "2",
         text: input,
         isUserMessage: true,
-      });
+      };
+
+      messagesContext.addMessage(newMessage);
 
       const response = await fetch("/api/message", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ messages: [{
-          id: "123",
-          isUserMessage: true,
-          text: input,
-        }], langLevel: "b1" }),
+        body: JSON.stringify({
+          messages: [...messagesContext.messages, newMessage],
+          langLevel: "b1",
+        }),
       }).then((res) => res.json());
 
-      console.log(response)
+      console.log(response);
 
       messagesContext.addMessage({
         id: "3",
@@ -103,7 +104,6 @@ export const Chat = () => {
       utterance.lang = "en-US";
 
       window.speechSynthesis.speak(utterance);
-
     };
 
     recognition.start();
@@ -116,8 +116,11 @@ export const Chat = () => {
       <p>Microphone: {listening ? "on" : "off"}</p>
       <button onClick={handleStart}>Start</button>
       <button onClick={handleStop}>Stop</button>
-      {messagesContext.messages.map(({isUserMessage, text}, index) => (
-        <div key={index} style={{backgroundColor: (isUserMessage ? "grey" : "blue")}}>
+      {messagesContext.messages.map(({ isUserMessage, text }, index) => (
+        <div
+          key={index}
+          style={{ backgroundColor: isUserMessage ? "grey" : "blue" }}
+        >
           <p>{text}</p>
         </div>
       ))}
