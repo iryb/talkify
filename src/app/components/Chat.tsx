@@ -2,11 +2,13 @@
 import { MessagesContext } from "@/context/messages";
 import React, { useContext, useEffect, useState } from "react";
 import { Message } from "./Message";
+import { RecordingButton } from "./RecordingButton";
 
 export const Chat = () => {
   const listening = false;
   const [transcript, setTranscript] = useState<string>();
   const messagesContext = useContext(MessagesContext);
+  const [isRecording, setIsRecording] = useState(false);
 
   // const { mutate: sendMessage, isPending: isLoading } = useMutation({
   //     mutationFn: async (message: Message) => {
@@ -67,6 +69,7 @@ export const Chat = () => {
     const SpeechRecognition =
       window.SpeechRecognition || window.webkitSpeechRecognition;
     const recognition = new SpeechRecognition();
+    setIsRecording(true);
     recognition.onresult = async function (event) {
       const input = event.results[0][0].transcript;
 
@@ -92,6 +95,8 @@ export const Chat = () => {
         }),
       }).then((res) => res.json());
 
+      setIsRecording(false);
+
       console.log(response);
 
       messagesContext.addMessage({
@@ -112,13 +117,19 @@ export const Chat = () => {
   const handleStop = () => {};
 
   return (
-    <div>
-      <p>Microphone: {listening ? "on" : "off"}</p>
-      <button onClick={handleStart}>Start</button>
-      <button onClick={handleStop}>Stop</button>
-      {messagesContext.messages.map(({ isUserMessage, text }, index) => (
-        <Message key={index} isUserMessage={isUserMessage} text={text} />
-      ))}
+    <div className="max-w-md w-full">
+      <div className="overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
+        {messagesContext.messages.map(({ isUserMessage, text }, index) => (
+          <Message key={index} isUserMessage={isUserMessage} text={text} />
+        ))}
+      </div>
+      <div className="flex justify-center gap-4 p-4 mt-4 border-t border-slate-400">
+        <RecordingButton
+          startRecordingCallback={handleStart}
+          stopRecordingCallback={handleStop}
+          isActive={isRecording}
+        />
+      </div>
     </div>
   );
 };

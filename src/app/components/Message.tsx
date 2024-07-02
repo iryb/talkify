@@ -10,8 +10,10 @@ export const Message = ({ isUserMessage, text }: MessageProps) => {
   return (
     <div
       className={clsx(
-        "p-2 border-slate-100 rounded-md",
-        isUserMessage ? "bg-gray-300" : "bg-slate-400"
+        "p-2 border-slate-100 rounded-md max-w-max",
+        isUserMessage
+          ? "bg-gray-300 rounded-br-none"
+          : "bg-slate-500 text-white rounded-bl-none"
       )}
     >
       {text}
