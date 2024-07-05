@@ -6,8 +6,8 @@ type FormData = {
   level: "a1" | "a2" | "b1" | "b2" | "c1" | "c2";
   lessonTopic: string;
   grammarTopic: string;
-  vocabulary: string[] | null;
-  questions: string[] | null;
+  vocabulary?: string;
+  questions?: string;
 };
 
 export const AddChat = () => {
@@ -16,8 +16,6 @@ export const AddChat = () => {
       level: "a1",
       lessonTopic: "Free topic",
       grammarTopic: "Free topic",
-      vocabulary: null,
-      questions: null,
     },
   });
   const onSubmit = handleSubmit((data) => console.log(data));
