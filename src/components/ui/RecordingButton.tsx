@@ -1,5 +1,5 @@
 import React from "react";
-import { DotsLoader } from "./ui/DotsLoader";
+import { DotsLoader } from "./DotsLoader";
 
 type RecordingButtonProps = {
   startRecordingCallback: () => void;

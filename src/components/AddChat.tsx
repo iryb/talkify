@@ -1,6 +1,7 @@
-import { Select, Button, Form, Input } from "antd";
+import { Select, Form, Input } from "antd";
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
+import { Button } from "./ui/Button";
 
 type FormData = {
   level: "a1" | "a2" | "b1" | "b2" | "c1" | "c2";
@@ -95,9 +96,7 @@ export const AddChat = () => {
           />
         </Form.Item>
 
-        <Button type="primary" htmlType="submit">
-          Add Chat
-        </Button>
+        <Button type="submit">Add Chat</Button>
       </Form>
     </div>
   );

@@ -1,8 +1,8 @@
 "use client";
 import { MessagesContext } from "@/context/messages";
 import React, { useContext, useEffect, useState } from "react";
-import { Message } from "./Message";
-import { RecordingButton } from "./RecordingButton";
+import { Message } from "@/components/Message";
+import { RecordingButton } from "./ui/RecordingButton";
 
 export const Chat = () => {
   const listening = false;
