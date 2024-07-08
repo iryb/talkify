@@ -1,102 +1,129 @@
-import { Select, Form, Input } from "antd";
 import React from "react";
-import { useForm, Controller } from "react-hook-form";
-import { Button } from "./ui/Button";
-
-type FormData = {
-  level: "a1" | "a2" | "b1" | "b2" | "c1" | "c2";
-  lessonTopic: string;
-  grammarTopic: string;
-  vocabulary?: string;
-  questions?: string;
-};
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { ChatFormSchema } from "@/lib/validators/chat";
+import { Button } from "@/components/ui/Button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/Form";
+import { Input } from "@/components/ui/Input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/Select";
+import { Textarea } from "@/components/ui/Textarea";
 
 export const AddChat = () => {
-  const { handleSubmit, control, reset } = useForm<FormData>({
+  const form = useForm<z.infer<typeof ChatFormSchema>>({
+    resolver: zodResolver(ChatFormSchema),
     defaultValues: {
-      level: "a1",
       lessonTopic: "Free topic",
       grammarTopic: "Free topic",
+      level: "a1",
     },
   });
-  const onSubmit = handleSubmit((data) => console.log(data));
+
+  function onSubmit(values: z.infer<typeof ChatFormSchema>) {
+    console.log(values);
+  }
 
   return (
     <div>
-      <h1>Add Chat</h1>
-      <Form onFinish={onSubmit}>
-        <Form.Item<FormData> label="English level" name="level">
-          <Controller
-            name="level"
-            control={control}
-            rules={{ required: true }}
+      <h1 className="text-xl mb-4 font-bold">Add Chat</h1>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <FormField
+            control={form.control}
+            name="lessonTopic"
             render={({ field }) => (
-              <Select
-                {...field}
-                options={[
-                  {
-                    value: "a1",
-                    label: "A1",
-                  },
-                  {
-                    value: "a2",
-                    label: "A2",
-                  },
-                  {
-                    value: "b1",
-                    label: "B1",
-                  },
-                  {
-                    value: "b2",
-                    label: "B2",
-                  },
-                  {
-                    value: "c1",
-                    label: "C1",
-                  },
-                  {
-                    value: "c2",
-                    label: "C2",
-                  },
-                ]}
-              />
+              <FormItem>
+                <FormLabel>Lesson topic</FormLabel>
+                <FormControl>
+                  <Input placeholder="Free topic" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
           />
-        </Form.Item>
 
-        <Form.Item<FormData> label="Lesson topic" name="lessonTopic">
-          <Controller
-            name="lessonTopic"
-            control={control}
-            render={({ field }) => <Input {...field} />}
+          <FormField
+            control={form.control}
+            name="level"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>English Level</FormLabel>
+                <FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Level" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="a1">A1</SelectItem>
+                      <SelectItem value="a2">A2</SelectItem>
+                      <SelectItem value="b1">B1</SelectItem>
+                      <SelectItem value="b2">B2</SelectItem>
+                      <SelectItem value="c1">C1</SelectItem>
+                      <SelectItem value="c2">C2</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+              </FormItem>
+            )}
           />
-        </Form.Item>
 
-        <Form.Item<FormData> label="Grammar topic" name="grammarTopic">
-          <Controller
+          <FormField
+            control={form.control}
             name="grammarTopic"
-            control={control}
-            render={({ field }) => <Input {...field} />}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Grammar topic</FormLabel>
+                <FormControl>
+                  <Input placeholder="Free topic" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </Form.Item>
 
-        <Form.Item<FormData> label="Vocabulary" name="vocabulary">
-          <Controller
+          <FormField
+            control={form.control}
             name="vocabulary"
-            control={control}
-            render={({ field }) => <Input {...field} />}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Vocabulary</FormLabel>
+                <FormControl>
+                  <Textarea className="resize-none" {...field} />
+                </FormControl>
+              </FormItem>
+            )}
           />
-        </Form.Item>
 
-        <Form.Item<FormData> label="Questions" name="questions">
-          <Controller
+          <FormField
+            control={form.control}
             name="questions"
-            control={control}
-            render={({ field }) => <Input {...field} />}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Questions</FormLabel>
+                <FormControl>
+                  <Textarea className="resize-none" {...field} />
+                </FormControl>
+              </FormItem>
+            )}
           />
-        </Form.Item>
-
-        <Button type="submit">Add Chat</Button>
+          <Button type="submit">Save</Button>
+        </form>
       </Form>
     </div>
   );
