@@ -118,8 +118,7 @@ export const Chat = () => {
 
   return (
     <div className="max-w-md w-full">
-      <h1>Topic: Accommodations</h1>
-      <button>Add New Chat</button>
+      <h1 className="text-xl mb-4 font-bold">Topic:</h1>
       <div className="overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
         {messagesContext.messages.map(({ isUserMessage, text }, index) => (
           <Message key={index} isUserMessage={isUserMessage} text={text} />
