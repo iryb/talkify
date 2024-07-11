@@ -1,8 +1,8 @@
 import { Chat } from "@/lib/validators/chat";
 import React from "react";
 import { ChatPreview } from "./ChatPreview";
-import { Button } from "./ui/Button";
 import Link from "next/link";
+import { Plus } from "lucide-react";
 
 const mockChats: Chat[] = [
   {
@@ -33,7 +33,14 @@ const mockChats: Chat[] = [
 
 export const Sidebar = () => {
   return (
-    <div className="bg-slate-100 w-1/4 border-r border-slate-300 px-4 py-8 -my-2">
+    <div className="relative bg-slate-100 w-1/4 border-r border-slate-300 px-4 py-8 -my-2">
+      <Link
+        className="absolute right-4 top-8"
+        href="/add-chat"
+        title="Add New Chat"
+      >
+        <Plus />
+      </Link>
       <div>
         {mockChats.map(
           ({ id, lessonTopic, grammarTopic, vocabulary }, index) => (
@@ -52,9 +59,6 @@ export const Sidebar = () => {
           )
         )}
       </div>
-      <Button asChild className="fixed bottom-4 left-4 w-[calc(25%-2rem)]">
-        <Link href="/add-chat">Add Chat</Link>
-      </Button>
     </div>
   );
 };

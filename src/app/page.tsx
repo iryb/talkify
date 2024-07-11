@@ -3,8 +3,11 @@ import "regenerator-runtime/runtime";
 import { Chat } from "@/components/Chat";
 export default function Home() {
   return (
-    <main className="p-24">
-      <Chat />
-    </main>
+    <Chat
+      id="123"
+      lessonTopic="Accommodations"
+      grammarTopic="Modals"
+      vocabulary="word1, word2, word3, word4"
+    />
   );
 }

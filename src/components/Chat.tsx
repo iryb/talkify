@@ -3,8 +3,9 @@ import { MessagesContext } from "@/context/messages";
 import React, { useContext, useEffect, useState } from "react";
 import { Message } from "@/components/Message";
 import { RecordingButton } from "./ui/RecordingButton";
+import { Chat as ChatProps } from "@/lib/validators/chat";
 
-export const Chat = () => {
+export const Chat = ({ lessonTopic, grammarTopic, vocabulary }: ChatProps) => {
   const listening = false;
   const [transcript, setTranscript] = useState<string>();
   const messagesContext = useContext(MessagesContext);
@@ -117,14 +118,18 @@ export const Chat = () => {
   const handleStop = () => {};
 
   return (
-    <div className="max-w-md w-full">
-      <h1 className="text-xl mb-4 font-bold">Topic:</h1>
-      <div className="overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
+    <div className="">
+      <div className="border-b p-8 mb-4">
+        <h1 className="text-xl font-bold">Topic: {lessonTopic}</h1>
+        <h2 className="text-lg">Grammar: {grammarTopic}</h2>
+        <p>Vocabulary: {vocabulary}</p>
+      </div>
+      <div className="overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch py-4 px-8">
         {messagesContext.messages.map(({ isUserMessage, text }, index) => (
           <Message key={index} isUserMessage={isUserMessage} text={text} />
         ))}
       </div>
-      <div className="flex justify-center gap-4 p-4 mt-4 border-t border-slate-400">
+      <div className="fixed bottom-0 left-1/4 w-3/4 flex justify-center gap-4 p-4 mt-4 border-t">
         <RecordingButton
           startRecordingCallback={handleStart}
           stopRecordingCallback={handleStop}
