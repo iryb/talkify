@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import React from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/Avatar";
 
 type MessageProps = {
   isUserMessage: boolean;

@@ -15,8 +15,10 @@ import { useForm } from "react-hook-form";
 import { Input } from "./ui/Input";
 import signIn from "@/firebase/auth/signin";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export const SignIn = () => {
+  const router = useRouter();
   const form = useForm<SignInProps>({
     resolver: zodResolver(SignInSchema),
     defaultValues: {
@@ -26,7 +28,7 @@ export const SignIn = () => {
   });
 
   function onSubmit(values: SignInProps) {
-    signIn(values);
+    signIn(values).then(() => router.push("/"));
   }
 
   return (
@@ -60,7 +62,7 @@ export const SignIn = () => {
               </FormItem>
             )}
           />
-          <Button type="submit">Sign Up</Button>
+          <Button type="submit">Sign In</Button>
         </form>
       </Form>
       <div className="mt-6 pt-2 border-t">
