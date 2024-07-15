@@ -4,6 +4,7 @@ export const ChatSchema = z.object({
   id: z.string(),
   lessonTopic: z.string(),
   grammarTopic: z.string(),
+  level: z.string(),
   vocabulary: z.string(),
   questions: z.string().optional(),
 });

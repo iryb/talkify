@@ -3,11 +3,7 @@ import React from "react";
 import { AddChat } from "@/components/AddChat";
 
 const Page = () => {
-  return (
-    <div>
-      <AddChat />
-    </div>
-  );
+  return <AddChat />;
 };
 
 export default Page;

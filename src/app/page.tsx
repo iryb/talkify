@@ -8,6 +8,7 @@ export default function Home() {
       lessonTopic="Accommodations"
       grammarTopic="Modals"
       vocabulary="word1, word2, word3, word4"
+      level={""}
     />
   );
 }
