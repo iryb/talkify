@@ -21,23 +21,31 @@ import {
   SelectValue,
 } from "@/components/ui/Select";
 import { Textarea } from "@/components/ui/Textarea";
+import { addChat } from "@/firebase/chat/chat";
+import { useChats } from "@/context/chats";
 
 export const AddChat = () => {
+  const { addChat: addNewChat } = useChats();
   const form = useForm<z.infer<typeof ChatFormSchema>>({
     resolver: zodResolver(ChatFormSchema),
     defaultValues: {
       lessonTopic: "Free topic",
       grammarTopic: "Free topic",
       level: "a1",
+      questions: "",
+      vocabulary: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof ChatFormSchema>) {
+  const onSubmit = async (values: z.infer<typeof ChatFormSchema>) => {
     console.log(values);
-  }
+    const newChat = await addChat(values);
+    //@ts-ignore
+    addNewChat(values);
+  };
 
   return (
-    <div>
+    <div className="p-8 overflow-y-scroll h-full">
       <h1 className="text-xl mb-4 font-bold">Add Chat</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
