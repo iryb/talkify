@@ -4,18 +4,25 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 type ChatsContextType = {
   chats: Chat[];
+  activeChatId: string;
+  setActiveChat: (id: string) => void;
   addChat: (chat: Chat) => void;
   removeChat: (id: string) => void;
 };
 
 export const ChatsContext = createContext<ChatsContextType>({
   chats: [],
+  activeChatId: "",
+  setActiveChat: () => {},
   addChat: () => {},
   removeChat: () => {},
 });
 
 export const ChatsProvider = ({ children }: { children: React.ReactNode }) => {
   const [chats, setChats] = useState<Chat[]>([]);
+  const [activeChatId, setActiveChatId] = useState<string>(chats[0].id);
+
+  console.log(chats);
 
   useEffect(() => {
     getChats().then((data) => setChats(data));
@@ -29,8 +36,14 @@ export const ChatsProvider = ({ children }: { children: React.ReactNode }) => {
     setChats(chats.filter((item) => item.id !== id));
   };
 
+  const setActiveChat = (id: string) => {
+    setActiveChat(id);
+  };
+
   return (
-    <ChatsContext.Provider value={{ chats, addChat, removeChat }}>
+    <ChatsContext.Provider
+      value={{ chats, activeChatId, setActiveChat, addChat, removeChat }}
+    >
       {children}
     </ChatsContext.Provider>
   );
