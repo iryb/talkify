@@ -4,17 +4,20 @@ import { Chat } from "@/components/Chat";
 import { useChats } from "@/context/chats";
 export default function Home() {
   const { chats, activeChatId } = useChats();
-  const [{ lessonTopic, grammarTopic, vocabulary, level }] = chats.filter(
-    (chat) => chat.id === activeChatId
-  );
+  let activeChat = null;
 
+  if (activeChatId) {
+    activeChat = chats.filter((chat) => chat.id === activeChatId)[0];
+  }
   return (
-    <Chat
-      id={activeChatId}
-      lessonTopic={lessonTopic}
-      grammarTopic={grammarTopic}
-      vocabulary={vocabulary}
-      level={level}
-    />
+    activeChat && (
+      <Chat
+        id={activeChatId}
+        lessonTopic={activeChat.lessonTopic}
+        grammarTopic={activeChat.grammarTopic}
+        vocabulary={activeChat.vocabulary}
+        level={activeChat.level}
+      />
+    )
   );
 }

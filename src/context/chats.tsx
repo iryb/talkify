@@ -20,12 +20,13 @@ export const ChatsContext = createContext<ChatsContextType>({
 
 export const ChatsProvider = ({ children }: { children: React.ReactNode }) => {
   const [chats, setChats] = useState<Chat[]>([]);
-  const [activeChatId, setActiveChatId] = useState<string>(chats[0].id);
-
-  console.log(chats);
+  const [activeChatId, setActiveChatId] = useState<string>("");
 
   useEffect(() => {
-    getChats().then((data) => setChats(data));
+    getChats().then((data) => {
+      setChats(data);
+      setActiveChatId(data[0].id);
+    });
   }, []);
 
   const addChat = (chat: Chat) => {
@@ -37,7 +38,7 @@ export const ChatsProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const setActiveChat = (id: string) => {
-    setActiveChat(id);
+    setActiveChatId(id);
   };
 
   return (

@@ -16,17 +16,13 @@ export const ChatPreview = ({
 }: ChatPreviewProps) => {
   const { setActiveChat } = useChats();
 
-  const handleClick = () => {
-    setActiveChat(id);
-  };
-
   return (
     <div
       className={clsx(
         "p-2 hover:bg-slate-300 hover:cursor-pointer transition-all",
         className
       )}
-      onClick={handleClick}
+      onClick={() => setActiveChat(id)}
     >
       <h3 className="font-bold text-md">{lessonTopic}</h3>
       <p className="">Grammar: {grammarTopic}</p>
