@@ -1,6 +1,7 @@
 import { useChats } from "@/context/chats";
 import { Chat } from "@/lib/validators/chat";
 import clsx from "clsx";
+import Link from "next/link";
 import React from "react";
 
 interface ChatPreviewProps extends Chat {
@@ -24,9 +25,11 @@ export const ChatPreview = ({
       )}
       onClick={() => setActiveChat(id)}
     >
-      <h3 className="font-bold text-md">{lessonTopic}</h3>
-      <p className="">Grammar: {grammarTopic}</p>
-      <p>{vocabulary}</p>
+      <Link href="/">
+        <h3 className="font-bold text-md">{lessonTopic}</h3>
+        <p className="">Grammar: {grammarTopic}</p>
+        <p>{vocabulary}</p>
+      </Link>
     </div>
   );
 };

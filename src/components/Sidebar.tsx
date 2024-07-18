@@ -8,7 +8,8 @@ export const Sidebar = () => {
   const { chats } = useChats();
 
   return (
-    <div className="relative bg-slate-100 w-1/4 border-r border-slate-300 px-4 py-8 -my-2">
+    <div className="relative bg-slate-100 w-1/4 border-r border-slate-300 px-4 py-8">
+      <h2 className="mb-2 px-2 font-bold text-lg">Recent chats</h2>
       <Link
         className="absolute right-4 top-8"
         href="/add-chat"
