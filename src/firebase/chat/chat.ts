@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import { collection, addDoc, getDocs, Timestamp } from "firebase/firestore";
 import { db } from "../config";
 import { Chat, ChatForm } from "@/lib/validators/chat";
 
@@ -16,9 +16,11 @@ export const addChat = async ({
       level,
       questions,
       vocabulary,
+      createdAt: Timestamp.fromDate(new Date()),
+      modifiedAt: Timestamp.fromDate(new Date()),
     });
 
-    return docRef;
+    return docRef.id;
   } catch (error) {
     throw error;
   }
@@ -36,6 +38,8 @@ export const getChats = async (): Promise<Chat[]> => {
         level: doc.data().level,
         vocabulary: doc.data().vocabulary,
         questions: doc.data().questions,
+        createdAt: doc.data().createdAt,
+        modifiedAt: doc.data().modifiedAt,
       };
 
       return chat;

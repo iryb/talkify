@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { ChatFormSchema } from "@/lib/validators/chat";
+import { ChatForm, ChatFormSchema } from "@/lib/validators/chat";
 import { Button } from "@/components/ui/Button";
 import {
   Form,
@@ -26,7 +26,7 @@ import { useChats } from "@/context/chats";
 
 export const AddChat = () => {
   const { addChat: addNewChat } = useChats();
-  const form = useForm<z.infer<typeof ChatFormSchema>>({
+  const form = useForm<ChatForm>({
     resolver: zodResolver(ChatFormSchema),
     defaultValues: {
       lessonTopic: "Free topic",
@@ -37,11 +37,14 @@ export const AddChat = () => {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof ChatFormSchema>) => {
-    console.log(values);
-    const newChat = await addChat(values);
-    //@ts-ignore
-    addNewChat(values);
+  const onSubmit = async (values: ChatForm) => {
+    const newChatId = await addChat(values);
+    addNewChat({
+      id: newChatId,
+      createdAt: Date(),
+      modifiedAt: Date(),
+      ...values,
+    });
   };
 
   return (

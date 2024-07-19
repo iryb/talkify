@@ -5,8 +5,10 @@ export const ChatSchema = z.object({
   lessonTopic: z.string(),
   grammarTopic: z.string(),
   level: z.string(),
-  vocabulary: z.string(),
+  vocabulary: z.string().optional(),
   questions: z.string().optional(),
+  createdAt: z.string(),
+  modifiedAt: z.string(),
 });
 
 export type Chat = z.infer<typeof ChatSchema>;
