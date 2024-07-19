@@ -9,7 +9,11 @@ type MessageProps = {
 
 export const Message = ({ isUserMessage, text }: MessageProps) => {
   return (
-    <div className="flex gap-4">
+    <div
+      className={clsx("flex gap-4 w-full", {
+        "flex-row-reverse": isUserMessage,
+      })}
+    >
       <Avatar>
         <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
         <AvatarFallback>CN</AvatarFallback>

@@ -5,7 +5,14 @@ import { Message } from "@/components/Message";
 import { RecordingButton } from "./ui/RecordingButton";
 import { Chat as ChatProps } from "@/lib/validators/chat";
 
-export const Chat = ({ lessonTopic, grammarTopic, vocabulary }: ChatProps) => {
+export const Chat = ({
+  id,
+  level,
+  lessonTopic,
+  grammarTopic,
+  vocabulary,
+  questions,
+}: ChatProps) => {
   const listening = false;
   const [transcript, setTranscript] = useState<string>();
   const messagesContext = useContext(MessagesContext);
@@ -92,7 +99,11 @@ export const Chat = ({ lessonTopic, grammarTopic, vocabulary }: ChatProps) => {
         },
         body: JSON.stringify({
           messages: [...messagesContext.messages, newMessage],
-          langLevel: "b1",
+          level,
+          lessonTopic,
+          grammarTopic,
+          vocabulary,
+          questions,
         }),
       }).then((res) => res.json());
 
@@ -124,7 +135,7 @@ export const Chat = ({ lessonTopic, grammarTopic, vocabulary }: ChatProps) => {
         <h2 className="text-lg">Grammar: {grammarTopic}</h2>
         <p>Vocabulary: {vocabulary}</p>
       </div>
-      <div className="overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch py-4 px-8">
+      <div className="overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch py-4 px-8 flex flex-wrap gap-2">
         {messagesContext.messages.map(({ isUserMessage, text }, index) => (
           <Message key={index} isUserMessage={isUserMessage} text={text} />
         ))}

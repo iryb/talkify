@@ -23,8 +23,8 @@ export const addChat = async ({
       level,
       questions,
       vocabulary,
-      createdAt: Timestamp.fromDate(new Date()),
-      modifiedAt: Timestamp.fromDate(new Date()),
+      createdAt: new Date().toJSON(),
+      modifiedAt: new Date().toJSON(),
     });
 
     return docRef.id;

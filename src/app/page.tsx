@@ -17,6 +17,8 @@ export default function Home() {
         grammarTopic={activeChat.grammarTopic}
         vocabulary={activeChat.vocabulary}
         level={activeChat.level}
+        createdAt={activeChat.createdAt}
+        modifiedAt={activeChat.modifiedAt}
       />
     )
   );
