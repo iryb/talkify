@@ -1,5 +1,6 @@
 //@ts-nocheck
 import { ChatGPTMessage } from "@/lib/openai-stream";
+import { createPrompt } from "@/lib/prompt";
 import { MessageArraySchema } from "@/lib/validators/message";
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
@@ -9,7 +10,8 @@ const openai = new OpenAI({
 });
 
 export async function POST(req: Request) {
-  const { messages, langLevel } = await req.json();
+  const { messages, level, lessonTopic, grammarTopic, vocabulary, questions } =
+    await req.json();
 
   const parsedMessages = MessageArraySchema.parse(messages);
 
@@ -20,7 +22,13 @@ export async function POST(req: Request) {
 
   outboundMessages.unshift({
     role: "system",
-    content: `You are English speaking partner. Start an engaging conversation. Use ${langLevel} language level in conversation.`,
+    content: createPrompt({
+      level,
+      lessonTopic,
+      grammarTopic,
+      vocabulary,
+      questions,
+    }),
   });
 
   const payload = {
