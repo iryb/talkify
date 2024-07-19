@@ -1,4 +1,11 @@
-import { collection, addDoc, getDocs, Timestamp } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  Timestamp,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 import { db } from "../config";
 import { Chat, ChatForm } from "@/lib/validators/chat";
 
@@ -47,4 +54,13 @@ export const getChats = async (): Promise<Chat[]> => {
   );
 
   return data;
+};
+
+export const deleteChat = async (id: string) => {
+  try {
+    await deleteDoc(doc(db, "chat", id));
+    return id;
+  } catch (error) {
+    throw error;
+  }
 };
