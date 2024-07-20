@@ -1,6 +1,6 @@
 "use client";
 import { MessagesContext } from "@/context/messages";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Message } from "@/components/Message";
 import { RecordingButton } from "./ui/RecordingButton";
 import { Chat as ChatProps } from "@/lib/validators/chat";
@@ -13,76 +13,22 @@ export const Chat = ({
   vocabulary,
   questions,
 }: ChatProps) => {
-  const listening = false;
-  const [transcript, setTranscript] = useState<string>();
   const messagesContext = useContext(MessagesContext);
   const [isRecording, setIsRecording] = useState(false);
-
-  // const { mutate: sendMessage, isPending: isLoading } = useMutation({
-  //     mutationFn: async (message: Message) => {
-  // const response = await fetch("/api/message", {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify({ messages: [message] }),
-  // });
-
-  // if (!response.ok) {
-  //   throw new Error();
-  // }
-
-  // return response.body;
-  //     },
-  //     onMutate(message) {
-  //       addMessage(message);
-  //     },
-  //     onSuccess: async (stream) => {
-  //       if (!stream) throw new Error("No stream found");
-
-  //       const id = nanoid();
-  //       const responseMessage: Message = {
-  //         id,
-  //         isUserMessage: false,
-  //         text: "",
-  //       };
-
-  //       addMessage(responseMessage);
-
-  //       setIsMessageUpdating(true);
-
-  //       const reader = stream.getReader();
-  //       const decoder = new TextDecoder();
-  //       let done = false;
-
-  //       while (!done) {
-  //         const { value, done: doneReading } = await reader.read();
-  //         done = doneReading;
-  //         const chunkValue = decoder.decode(value);
-  //         updateMessage(id, (prev) => prev + chunkValue);
-  //       }
-
-  //       setIsMessageUpdating(false);
-  //       setInput("");
-  //       setTimeout(() => textareaRef.current?.focus(), 10);
-  //     },
-  //     onError(_, message) {
-  //       toast.error("Something went wrong. Please try again.");
-  //       removeMessage(message.id);
-  //       textareaRef.current?.focus();
-  //     },
-  //   });
+  const recognitionRef = useRef<SpeechRecognition>();
 
   const handleStart = () => {
     const SpeechRecognition =
       window.SpeechRecognition || window.webkitSpeechRecognition;
-    const recognition = new SpeechRecognition();
+    recognitionRef.current = new SpeechRecognition();
+    recognitionRef.current.continuous = true;
+
     setIsRecording(true);
-    recognition.onresult = async function (event) {
+
+    recognitionRef.current.onresult = async function (event) {
       const input = event.results[0][0].transcript;
 
       console.log(event);
-      setTranscript(input);
 
       const newMessage = {
         id: "2",
@@ -123,10 +69,13 @@ export const Chat = ({
       window.speechSynthesis.speak(utterance);
     };
 
-    recognition.start();
+    recognitionRef.current.start();
   };
 
-  const handleStop = () => {};
+  const handleStop = () => {
+    setIsRecording(false);
+    recognitionRef.current?.stop();
+  };
 
   return (
     <div className="">
