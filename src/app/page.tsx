@@ -1,12 +1,25 @@
-"use client"
-import 'regenerator-runtime/runtime'
-import Dictaphone from "@/app/components/Dictaphone"
+"use client";
+import "regenerator-runtime/runtime";
+import { Chat } from "@/components/Chat";
+import { useChats } from "@/context/chats";
 export default function Home() {
+  const { chats, activeChatId } = useChats();
+  let activeChat = null;
+
+  if (activeChatId) {
+    activeChat = chats.filter((chat) => chat.id === activeChatId)[0];
+  }
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-
-    <Dictaphone />
-
-    </main>
+    activeChat && (
+      <Chat
+        id={activeChatId}
+        lessonTopic={activeChat.lessonTopic}
+        grammarTopic={activeChat.grammarTopic}
+        vocabulary={activeChat.vocabulary}
+        level={activeChat.level}
+        createdAt={activeChat.createdAt}
+        modifiedAt={activeChat.modifiedAt}
+      />
+    )
   );
 }
