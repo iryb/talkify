@@ -2,6 +2,7 @@
 import "regenerator-runtime/runtime";
 import { Chat } from "@/components/Chat";
 import { useChats } from "@/context/chats";
+import { ChatRSR } from "@/components/ChatRSR";
 export default function Home() {
   const { chats, activeChatId } = useChats();
   let activeChat = null;
@@ -11,7 +12,7 @@ export default function Home() {
   }
   return (
     activeChat && (
-      <Chat
+      <ChatRSR
         id={activeChatId}
         lessonTopic={activeChat.lessonTopic}
         grammarTopic={activeChat.grammarTopic}

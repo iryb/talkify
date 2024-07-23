@@ -1,4 +1,5 @@
 import { Message } from "@/lib/validators/message";
+import { nanoid } from "nanoid";
 import { createContext, useContext, useState } from "react";
 
 type MessagesContextType = {
@@ -21,7 +22,7 @@ export const MessagesProvider = ({
   children: React.ReactNode;
 }) => {
   const defaultMessage = {
-    id: "123",
+    id: nanoid(),
     text: "Hello. How are you?",
     isUserMessage: false,
   };
