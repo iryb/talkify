@@ -3,10 +3,11 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import { Chat as ChatProps } from "@/lib/validators/chat";
-import { MessagesContext } from "@/context/messages";
+import { MessagesContext, useMessages } from "@/context/messages";
 import { Message } from "./Message";
 import { RecordingButton } from "./ui/RecordingButton";
 import { nanoid } from "nanoid";
+import { Button } from "./ui/Button";
 
 export const ChatRSR = ({
   id,
@@ -16,7 +17,7 @@ export const ChatRSR = ({
   vocabulary,
   questions,
 }: ChatProps) => {
-  const messagesContext = useContext(MessagesContext);
+  const { messages, addMessage } = useMessages();
   const [isRecording, setIsRecording] = useState(false);
 
   const { transcript, resetTranscript } = useSpeechRecognition();
@@ -26,17 +27,21 @@ export const ChatRSR = ({
     setIsRecording(true);
   };
 
-  const handleStop = async () => {
+  const sendMessage = async (
+    getFeedback = false
+  ): Promise<{
+    text: string;
+  }> => {
+    setIsRecording(false);
+    SpeechRecognition.stopListening();
+
     const newMessage = {
       id: nanoid(),
-      text: transcript,
+      text: getFeedback ? "Get Feedback" : transcript,
       isUserMessage: true,
     };
+    addMessage(newMessage);
 
-    messagesContext.addMessage(newMessage);
-
-    SpeechRecognition.stopListening();
-    setIsRecording(false);
     resetTranscript();
 
     const response = await fetch("/api/message", {
@@ -45,7 +50,7 @@ export const ChatRSR = ({
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        messages: [...messagesContext.messages, newMessage],
+        messages: [...messages, newMessage],
         level,
         lessonTopic,
         grammarTopic,
@@ -54,17 +59,32 @@ export const ChatRSR = ({
       }),
     }).then((res) => res.json());
 
-    messagesContext.addMessage({
+    addMessage({
       id: nanoid(),
       text: response.text,
       isUserMessage: false,
     });
 
-    let utterance = new SpeechSynthesisUtterance(response.text);
+    return response;
+  };
+
+  const speak = (text: string) => {
+    let utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = "en-US";
 
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(utterance);
+  };
+
+  const handleStop = async () => {
+    if (transcript.length === 0) return;
+
+    const response = await sendMessage();
+    speak(response.text);
+  };
+
+  const handleFinishChat = async () => {
+    await sendMessage(true);
   };
 
   return (
@@ -74,17 +94,20 @@ export const ChatRSR = ({
         <h2 className="text-lg">Grammar: {grammarTopic}</h2>
         {vocabulary && <p>Vocabulary: {vocabulary}</p>}
       </div>
-      <div className="overflow-y-scroll h-[calc(100vh-4rem-120px-95px)] scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch py-4 px-8 flex flex-wrap gap-2">
-        {messagesContext.messages.map(({ isUserMessage, text }, index) => (
+      <div className="overflow-y-scroll h-[calc(100vh-4rem-120px-95px)] scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch py-4 px-8 flex flex-col gap-2">
+        {messages.map(({ isUserMessage, text }, index) => (
           <Message key={index} isUserMessage={isUserMessage} text={text} />
         ))}
       </div>
-      <div className="fixed bottom-0 left-1/4 w-3/4 flex justify-center gap-4 p-4 mt-4 border-t">
+      <div className="fixed bottom-0 left-1/4 w-3/4 flex justify-center gap-4 p-4 mt-4 border-t bg-white">
         <RecordingButton
           startRecordingCallback={handleStart}
           stopRecordingCallback={handleStop}
           isActive={isRecording}
         />
+        <Button onClick={handleFinishChat} disabled={!(messages.length > 2)}>
+          Get Feedback
+        </Button>
       </div>
     </div>
   );
