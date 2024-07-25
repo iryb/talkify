@@ -89,10 +89,12 @@ export const ChatRSR = ({
 
   return (
     <div className="">
-      <div className="border-b p-8 mb-4">
+      <div className="border-b p-4 mb-4">
         <h1 className="text-xl font-bold">Topic: {lessonTopic}</h1>
-        <h2 className="text-lg">Grammar: {grammarTopic}</h2>
-        {vocabulary && <p>Vocabulary: {vocabulary}</p>}
+        <h2 className="">Grammar: {grammarTopic}</h2>
+        {vocabulary && (
+          <p className="text-sm italic">Vocabulary: {vocabulary}</p>
+        )}
       </div>
       <div className="overflow-y-scroll h-[calc(100vh-4rem-120px-95px)] scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch py-4 px-8 flex flex-col gap-2">
         {messages.map(({ isUserMessage, text }, index) => (

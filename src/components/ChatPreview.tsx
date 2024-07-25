@@ -22,9 +22,12 @@ export const ChatPreview = ({
   const { messages, removeAllMessages } = useMessages();
 
   const handleDeleteChat = async (id: string) => {
-    const deletedChatId = await deleteChat(id);
-    removeChat(deletedChatId);
-    setActiveChat(chats[0].id);
+    const deleteChatConfirm = confirm("Do you really want to delete the chat?");
+    if (deleteChatConfirm) {
+      const deletedChatId = await deleteChat(id);
+      removeChat(deletedChatId);
+      setActiveChat(chats[0].id);
+    }
   };
 
   const handleChangeChat = (id: string) => {
@@ -65,9 +68,9 @@ export const ChatPreview = ({
         <Pencil />
       </a>
       <Link href="/">
-        <h3 className="font-bold text-md">{lessonTopic}</h3>
-        <p className="">Grammar: {grammarTopic}</p>
-        <p>{vocabulary}</p>
+        <h3 className="font-bold">{lessonTopic}</h3>
+        <p className="text-sm">Grammar: {grammarTopic}</p>
+        <p className="text-sm italic">{vocabulary}</p>
       </Link>
     </div>
   );
