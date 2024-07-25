@@ -13,7 +13,7 @@ export const Message = ({ isUserMessage, text }: MessageProps) => {
   const userName = currentUser ? currentUser.email?.slice(0, 2) : "You";
   return (
     <div
-      className={clsx("flex gap-4 w-full", {
+      className={clsx("flex gap-4 w-full h-max", {
         "flex-row-reverse": isUserMessage,
       })}
     >
