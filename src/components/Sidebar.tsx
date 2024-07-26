@@ -4,13 +4,19 @@ import Link from "next/link";
 import { Plus } from "lucide-react";
 import { useChats } from "@/context/chats";
 import { sortChatsByDate } from "@/lib/utils";
+import clsx from "clsx";
 
 export const Sidebar = () => {
-  const { chats } = useChats();
+  const { chats, isChatsListActive } = useChats();
   const sortedChats = sortChatsByDate(chats);
 
   return (
-    <div className="relative bg-slate-100 w-1/4 border-r border-slate-300 px-2 py-4">
+    <div
+      className={clsx(
+        "relative bg-slate-100 w-1/4 border-r border-slate-300 px-2 py-4",
+        isChatsListActive && "bg-slate-500"
+      )}
+    >
       <h2 className="mb-2 px-2 font-bold text-lg">Recent chats</h2>
       <Link
         className="absolute right-4 top-4"

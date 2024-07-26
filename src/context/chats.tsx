@@ -5,6 +5,8 @@ import { createContext, useContext, useEffect, useState } from "react";
 type ChatsContextType = {
   chats: Chat[];
   activeChatId: string;
+  isChatsListActive: boolean;
+  openChatsList: () => void;
   setActiveChat: (id: string) => void;
   addChat: (chat: Chat) => void;
   removeChat: (id: string) => void;
@@ -13,6 +15,8 @@ type ChatsContextType = {
 export const ChatsContext = createContext<ChatsContextType>({
   chats: [],
   activeChatId: "",
+  isChatsListActive: false,
+  openChatsList: () => {},
   setActiveChat: () => {},
   addChat: () => {},
   removeChat: () => {},
@@ -21,6 +25,7 @@ export const ChatsContext = createContext<ChatsContextType>({
 export const ChatsProvider = ({ children }: { children: React.ReactNode }) => {
   const [chats, setChats] = useState<Chat[]>([]);
   const [activeChatId, setActiveChatId] = useState<string>("");
+  const [isChatsListActive, setChatsListActive] = useState(false);
 
   useEffect(() => {
     getChats().then((data) => {
@@ -41,9 +46,21 @@ export const ChatsProvider = ({ children }: { children: React.ReactNode }) => {
     setActiveChatId(id);
   };
 
+  const openChatsList = () => {
+    setChatsListActive(!isChatsListActive);
+  };
+
   return (
     <ChatsContext.Provider
-      value={{ chats, activeChatId, setActiveChat, addChat, removeChat }}
+      value={{
+        chats,
+        activeChatId,
+        isChatsListActive,
+        openChatsList,
+        setActiveChat,
+        addChat,
+        removeChat,
+      }}
     >
       {children}
     </ChatsContext.Provider>
