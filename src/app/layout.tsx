@@ -23,7 +23,7 @@ export default function RootLayout({
               <Header />
               <div className="flex h-[calc(100vh-4rem)] overflow-hidden">
                 <Sidebar />
-                <div className="w-3/4">{children}</div>
+                <div className="w-full md:w-3/4">{children}</div>
               </div>
             </body>
           </MessagesProvider>

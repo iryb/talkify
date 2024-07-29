@@ -12,14 +12,14 @@ export const Header = () => {
 
   return (
     <header className="border-b bg-slate-200 border-slate-300 h-16">
-      <div className="px-4 py-4 flex justify-between items-center">
+      <div className="px-4 py-3 flex justify-between items-center">
         <div className="text-xl uppercase font-bold tracking-wider text-slate-800">
           <Link href={"/"}>Talkify</Link>
         </div>
         <div className="flex gap-2 items-center">
           <Button
             variant="link"
-            className="flex order-2 align-center p-0"
+            className="flex md:hidden order-2 align-center p-0"
             onClick={() => openChatsList()}
           >
             {isChatsListActive ? <X /> : <Menu />}

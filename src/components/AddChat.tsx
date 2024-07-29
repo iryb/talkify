@@ -1,7 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { ChatForm, ChatFormSchema } from "@/lib/validators/chat";
 import { Button } from "@/components/ui/Button";
 import {
@@ -48,7 +47,7 @@ export const AddChat = () => {
   };
 
   return (
-    <div className="p-8 overflow-y-scroll h-full">
+    <div className="p-4 md:p-8 overflow-y-scroll h-full">
       <h1 className="text-xl mb-4 font-bold">Add Chat</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
