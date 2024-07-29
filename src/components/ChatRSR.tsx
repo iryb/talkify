@@ -101,7 +101,7 @@ export const ChatRSR = ({
           <Message key={index} isUserMessage={isUserMessage} text={text} />
         ))}
       </div>
-      <div className="fixed bottom-0 left-1/4 w-3/4 flex justify-center gap-4 p-4 mt-4 border-t bg-white">
+      <div className="fixed bottom-0 w-full md:left-1/4 md:w-3/4 flex justify-center gap-4 p-4 mt-4 border-t bg-white">
         <RecordingButton
           startRecordingCallback={handleStart}
           stopRecordingCallback={handleStop}
