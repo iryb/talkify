@@ -14,7 +14,7 @@ import {
 type ConfirmDialogProps = {
   confirmCallback: () => void;
   text: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
   triggerTitle?: string;
 };

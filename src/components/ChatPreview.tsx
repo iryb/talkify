@@ -44,9 +44,8 @@ export const ChatPreview = ({
         <ConfirmDialog
           text="Do you want to close current chat? Chat history will be removed."
           confirmCallback={() => handleChangeChat(id)}
-        >
-          <div className="absolute top-0 left-0 w-full h-full" />
-        </ConfirmDialog>
+          className="absolute top-0 left-0 w-full h-full"
+        />
       ) : (
         <div
           className="absolute top-0 left-0 w-full h-full"
@@ -69,11 +68,9 @@ export const ChatPreview = ({
       >
         <Pencil />
       </a>
-      <Link href="/">
-        <h3 className="font-bold">{lessonTopic}</h3>
-        <p className="text-sm">Grammar: {grammarTopic}</p>
-        <p className="text-sm italic">{vocabulary}</p>
-      </Link>
+      <h3 className="font-bold">{lessonTopic}</h3>
+      <p className="text-sm">Grammar: {grammarTopic}</p>
+      <p className="text-sm italic">{vocabulary}</p>
     </div>
   );
 };
