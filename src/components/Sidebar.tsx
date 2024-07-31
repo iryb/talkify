@@ -5,9 +5,11 @@ import { Plus } from "lucide-react";
 import { useChats } from "@/context/chats";
 import { sortChatsByDate } from "@/lib/utils";
 import clsx from "clsx";
+import { useAuth } from "@/context/auth";
 
 export const Sidebar = () => {
   const { chats, isChatsListActive } = useChats();
+  const { currentUser } = useAuth();
   const sortedChats = sortChatsByDate(chats);
 
   return (
@@ -18,13 +20,15 @@ export const Sidebar = () => {
       )}
     >
       <h2 className="mb-2 px-2 font-bold text-lg">Recent chats</h2>
-      <Link
-        className="absolute right-4 top-4"
-        href="/add-chat"
-        title="Add New Chat"
-      >
-        <Plus />
-      </Link>
+      {currentUser && (
+        <Link
+          className="absolute right-4 top-4"
+          href="/add-chat"
+          title="Add New Chat"
+        >
+          <Plus />
+        </Link>
+      )}
       {sortedChats.length > 0 && (
         <div className="px-2 h-[calc(100vh-125px)] md:h-full overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
           {sortedChats.map(

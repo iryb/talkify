@@ -5,6 +5,9 @@ import {
   Timestamp,
   deleteDoc,
   doc,
+  query,
+  where,
+  arrayUnion,
 } from "firebase/firestore";
 import { auth, db } from "../config";
 import { Chat, ChatForm } from "@/lib/validators/chat";
@@ -23,7 +26,7 @@ export const addChat = async ({
       level,
       questions,
       vocabulary,
-      assignedUsers: auth.currentUser?.uid,
+      assignedUsers: arrayUnion(auth.currentUser?.uid),
       createdAt: new Date().toJSON(),
       modifiedAt: new Date().toJSON(),
     });
@@ -34,8 +37,19 @@ export const addChat = async ({
   }
 };
 
-export const getChats = async (): Promise<Chat[]> => {
-  const querySnapshot = await getDocs(collection(db, "chat"));
+export const getChats = async ({
+  userId,
+}: {
+  userId: string;
+}): Promise<Chat[]> => {
+  if (!userId) return [];
+
+  const q = query(
+    collection(db, "chat"),
+    where("assignedUsers", "array-contains", userId)
+  );
+
+  const querySnapshot = await getDocs(q);
 
   const data = await Promise.all(
     await querySnapshot.docs.map(async (doc) => {

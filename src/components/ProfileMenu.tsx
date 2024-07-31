@@ -10,15 +10,22 @@ import {
 } from "./ui/Menubar";
 import { signOut } from "@/firebase/auth/signin";
 import { useRouter } from "next/navigation";
+import { useChats } from "@/context/chats";
+import { useMessages } from "@/context/messages";
 
 type ProfileMenuProps = {
   username: string;
 };
 
 export const ProfileMenu = ({ username }: ProfileMenuProps) => {
+  const { removeChats } = useChats();
+  const { removeAllMessages } = useMessages();
+
   const router = useRouter();
   const handleLogOut = () => {
     signOut().then(() => router.push("/"));
+    removeChats();
+    removeAllMessages();
   };
 
   return (
