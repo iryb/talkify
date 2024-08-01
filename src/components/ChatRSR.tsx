@@ -89,19 +89,19 @@ export const ChatRSR = ({
 
   return (
     <div className="">
-      <div className="border-b p-4 mb-4">
+      <div className="border-b p-4">
         <h1 className="text-xl font-bold">Topic: {lessonTopic}</h1>
         <h2 className="">Grammar: {grammarTopic}</h2>
         {vocabulary && (
           <p className="text-sm italic">Vocabulary: {vocabulary}</p>
         )}
       </div>
-      <div className="overflow-y-scroll h-[calc(100vh-4rem-120px-95px)] scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch py-4 px-8 flex flex-col gap-2">
+      <div className="overflow-y-scroll h-[calc(100vh-8rem-105px)] scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch py-4 px-4 md:px-8 flex flex-col gap-2">
         {messages.map(({ isUserMessage, text }, index) => (
           <Message key={index} isUserMessage={isUserMessage} text={text} />
         ))}
       </div>
-      <div className="fixed bottom-0 w-full md:left-1/4 md:w-3/4 flex justify-center gap-4 p-4 mt-4 border-t bg-white">
+      <div className="fixed bottom-0 w-full h-16 md:left-1/4 md:w-3/4 flex justify-center gap-4 p-3 border-t bg-white">
         <RecordingButton
           startRecordingCallback={handleStart}
           stopRecordingCallback={handleStop}
