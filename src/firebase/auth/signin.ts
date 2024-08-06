@@ -24,3 +24,5 @@ export async function signOut() {
     throw error;
   }
 }
+
+export async function deleteAccount(id: string) {}
