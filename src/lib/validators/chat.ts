@@ -19,6 +19,7 @@ export const ChatFormSchema = z.object({
   grammarTopic: z.string(),
   vocabulary: z.string().optional(),
   questions: z.string().optional(),
+  assignedUsers: z.string().optional(),
 });
 
 export type ChatForm = z.infer<typeof ChatFormSchema>;

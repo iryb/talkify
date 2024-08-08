@@ -1,33 +1,55 @@
 import { getChats } from "@/firebase/chat/chat";
 import { Chat } from "@/lib/validators/chat";
 import { createContext, useContext, useEffect, useState } from "react";
+import { useAuth } from "./auth";
+import { nanoid } from "nanoid";
 
 type ChatsContextType = {
   chats: Chat[];
   activeChatId: string;
+  isChatsListActive: boolean;
+  openChatsList: () => void;
   setActiveChat: (id: string) => void;
   addChat: (chat: Chat) => void;
   removeChat: (id: string) => void;
+  removeChats: () => void;
 };
 
 export const ChatsContext = createContext<ChatsContextType>({
   chats: [],
   activeChatId: "",
+  isChatsListActive: false,
+  openChatsList: () => {},
   setActiveChat: () => {},
   addChat: () => {},
   removeChat: () => {},
+  removeChats: () => {},
 });
 
 export const ChatsProvider = ({ children }: { children: React.ReactNode }) => {
-  const [chats, setChats] = useState<Chat[]>([]);
-  const [activeChatId, setActiveChatId] = useState<string>("");
+  const demoChat: Chat = {
+    id: nanoid(),
+    lessonTopic: "Weather",
+    grammarTopic: "Present Simple",
+    level: "A2",
+    createdAt: new Date().toJSON(),
+    modifiedAt: new Date().toJSON(),
+  };
+  const [chats, setChats] = useState<Chat[]>([demoChat]);
+  const [activeChatId, setActiveChatId] = useState<string>(demoChat.id);
+  const [isChatsListActive, setChatsListActive] = useState(false);
+  const { currentUser } = useAuth();
 
   useEffect(() => {
-    getChats().then((data) => {
-      setChats(data);
-      setActiveChatId(data[0].id);
-    });
-  }, []);
+    if (currentUser) {
+      getChats({ userId: currentUser.uid })
+        .then((data) => {
+          setChats((prev) => [...prev, ...data]);
+          setActiveChatId(data[0].id);
+        })
+        .catch((e) => console.log(e));
+    }
+  }, [currentUser]);
 
   const addChat = (chat: Chat) => {
     setChats((prev) => [...prev, chat]);
@@ -41,9 +63,27 @@ export const ChatsProvider = ({ children }: { children: React.ReactNode }) => {
     setActiveChatId(id);
   };
 
+  const openChatsList = () => {
+    setChatsListActive(!isChatsListActive);
+  };
+
+  const removeChats = () => {
+    setChats([demoChat]);
+    setActiveChat(demoChat.id);
+  };
+
   return (
     <ChatsContext.Provider
-      value={{ chats, activeChatId, setActiveChat, addChat, removeChat }}
+      value={{
+        chats,
+        activeChatId,
+        isChatsListActive,
+        openChatsList,
+        setActiveChat,
+        addChat,
+        removeChat,
+        removeChats,
+      }}
     >
       {children}
     </ChatsContext.Provider>

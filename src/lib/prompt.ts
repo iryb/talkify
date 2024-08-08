@@ -48,7 +48,8 @@ English Level: ${level} `;
     text += `Questions: ${questions}. `;
   }
 
-  text += `Also you can create your own questions depending on conversation flow.`;
+  text += `Also you can create your own questions depending on conversation flow.
+  Provide feedback after the words Get Feedback.`;
 
   return text;
 };

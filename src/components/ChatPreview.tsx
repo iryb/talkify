@@ -6,6 +6,7 @@ import clsx from "clsx";
 import { Pencil, X } from "lucide-react";
 import Link from "next/link";
 import React from "react";
+import { ConfirmDialog } from "./ConfirmDialog";
 
 interface ChatPreviewProps extends Chat {
   className?: string;
@@ -28,17 +29,8 @@ export const ChatPreview = ({
   };
 
   const handleChangeChat = (id: string) => {
-    if (messages.length > 1) {
-      const closeChat = confirm(
-        "Do you want to close current chat? Chat history will be removed."
-      );
-      if (closeChat) {
-        removeAllMessages();
-        setActiveChat(id);
-      }
-    } else {
-      setActiveChat(id);
-    }
+    removeAllMessages();
+    setActiveChat(id);
   };
 
   return (
@@ -47,16 +39,28 @@ export const ChatPreview = ({
         "relative group p-2 hover:bg-slate-300 hover:cursor-pointer transition-all",
         className
       )}
-      onClick={() => handleChangeChat(id)}
     >
-      <a
+      {messages.length > 1 ? (
+        <ConfirmDialog
+          text="Do you want to close current chat? Chat history will be removed."
+          confirmCallback={() => handleChangeChat(id)}
+          className="absolute top-0 left-0 w-full h-full"
+        />
+      ) : (
+        <div
+          className="absolute top-0 left-0 w-full h-full"
+          onClick={() => handleChangeChat(id)}
+        />
+      )}
+
+      <ConfirmDialog
         className="absolute top-2 right-2 hidden group-hover:block hover:text-white"
-        title="Delete Chat"
-        href="#"
-        onClick={() => handleDeleteChat(id)}
+        triggerTitle="Delete chat"
+        text="Do you really want to delete the chat?"
+        confirmCallback={() => handleDeleteChat(id)}
       >
         <X />
-      </a>
+      </ConfirmDialog>
       <a
         className="absolute top-2 right-10 hidden group-hover:block hover:text-white"
         title="Edit Chat"
@@ -64,11 +68,9 @@ export const ChatPreview = ({
       >
         <Pencil />
       </a>
-      <Link href="/">
-        <h3 className="font-bold text-md">{lessonTopic}</h3>
-        <p className="">Grammar: {grammarTopic}</p>
-        <p>{vocabulary}</p>
-      </Link>
+      <h3 className="font-bold">{lessonTopic}</h3>
+      <p className="text-sm">Grammar: {grammarTopic}</p>
+      <p className="text-sm italic">{vocabulary}</p>
     </div>
   );
 };

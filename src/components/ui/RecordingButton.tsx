@@ -1,5 +1,4 @@
 import React from "react";
-import { DotsLoader } from "./DotsLoader";
 
 type RecordingButtonProps = {
   startRecordingCallback: () => void;
@@ -13,24 +12,24 @@ export const RecordingButton = ({
   isActive,
 }: RecordingButtonProps) => {
   return (
-    <div>
+    <>
       {isActive ? (
         <button
-          className="flex gap-4 items-center py-2 px-4 rounded-md border-2 border-red-600 bg-red-600 text-white"
+          className="flex gap-2 items-center py-2 px-4 rounded-md border-2 border-red-600 bg-red-600 text-white text-sm font-bold"
           onClick={stopRecordingCallback}
         >
-          <DotsLoader />
+          <span className="inline-block w-3 h-3 rounded-full bg-white animate-pulse"></span>
           <span>Recording</span>
         </button>
       ) : (
         <button
-          className="flex gap-2 items-center py-2 px-4 rounded-md border-2 border-red-600 text-slate-800 hover:scale-105 transition-all"
+          className="flex gap-2 items-center py-2 px-4 rounded-md border-2 border-red-600 text-slate-800 text-sm font-bold hover:border-red-300 transition-all"
           onClick={startRecordingCallback}
         >
           <span className="inline-block w-3 h-3 rounded-full bg-red-600"></span>
-          <span>Start recording</span>
+          <span>Start Recording</span>
         </button>
       )}
-    </div>
+    </>
   );
 };

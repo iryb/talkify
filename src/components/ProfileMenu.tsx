@@ -8,17 +8,28 @@ import {
   MenubarSeparator,
   MenubarTrigger,
 } from "./ui/Menubar";
-import { signOut } from "@/firebase/auth/signin";
+import { deleteAccount, signOut } from "@/firebase/auth/signin";
 import { useRouter } from "next/navigation";
+import { useChats } from "@/context/chats";
+import { useMessages } from "@/context/messages";
 
 type ProfileMenuProps = {
   username: string;
 };
 
 export const ProfileMenu = ({ username }: ProfileMenuProps) => {
+  const { removeChats } = useChats();
+  const { removeAllMessages } = useMessages();
+
   const router = useRouter();
   const handleLogOut = () => {
     signOut().then(() => router.push("/"));
+    removeChats();
+    removeAllMessages();
+  };
+
+  const handleDeleteAccount = () => {
+    deleteAccount();
   };
 
   return (
@@ -38,6 +49,10 @@ export const ProfileMenu = ({ username }: ProfileMenuProps) => {
             <div className="px-2 py-1.5 text-sm">{username}</div>
             <MenubarSeparator />
             <MenubarItem onClick={handleLogOut}>Log Out</MenubarItem>
+            <MenubarSeparator />
+            <MenubarItem onClick={handleDeleteAccount} className="text-red-500">
+              Delete Account
+            </MenubarItem>
           </MenubarContent>
         </MenubarMenu>
       </Menubar>

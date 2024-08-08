@@ -2,6 +2,7 @@ import {
   signInWithEmailAndPassword,
   UserCredential,
   signOut as firebaseSignOut,
+  deleteUser,
 } from "firebase/auth";
 import { auth } from "../config";
 import { signIn as signInProps } from "@/lib/validators/auth";
@@ -20,6 +21,14 @@ export default async function signIn({
 export async function signOut() {
   try {
     return await firebaseSignOut(auth);
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function deleteAccount() {
+  try {
+    auth.currentUser?.delete();
   } catch (error) {
     throw error;
   }
