@@ -13,3 +13,7 @@ export const SignInSchema = z.object({
 });
 
 export type signIn = z.infer<typeof SignInSchema>;
+
+export const ReauthSchema = z.object({
+  password: z.string(),
+});
