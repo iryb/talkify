@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import {
   Form,
@@ -15,8 +15,11 @@ import { useForm } from "react-hook-form";
 import { Input } from "./ui/Input";
 import signUp from "@/firebase/auth/signup";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export const SignUp = () => {
+  const [error, setError] = useState(null);
+  const router = useRouter();
   const form = useForm<SignUpProps>({
     resolver: zodResolver(SignUpSchema),
     defaultValues: {
@@ -26,12 +29,16 @@ export const SignUp = () => {
   });
 
   function onSubmit(values: SignUpProps) {
-    signUp(values);
+    setError(null);
+    signUp(values)
+      .then(() => router.push("/"))
+      .catch((e) => setError(e.message));
   }
 
   return (
     <div className="p-4 md:p-8">
       <h1 className="text-xl mb-4 font-bold">Sign Up</h1>
+      {error && <div className="bg-red-400 p-4 mb-2">{error}</div>}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField

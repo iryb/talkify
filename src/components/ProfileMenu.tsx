@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Avatar, AvatarFallback } from "./ui/Avatar";
 import {
   Menubar,
@@ -8,10 +8,11 @@ import {
   MenubarSeparator,
   MenubarTrigger,
 } from "./ui/Menubar";
-import { deleteAccount, signOut } from "@/firebase/auth/signin";
+import { signOut } from "@/firebase/auth/signin";
 import { useRouter } from "next/navigation";
 import { useChats } from "@/context/chats";
 import { useMessages } from "@/context/messages";
+import { DeleteAccoutDialog } from "./DeleteAccoutDialog";
 
 type ProfileMenuProps = {
   username: string;
@@ -20,6 +21,7 @@ type ProfileMenuProps = {
 export const ProfileMenu = ({ username }: ProfileMenuProps) => {
   const { removeChats } = useChats();
   const { removeAllMessages } = useMessages();
+  const [isReauthOpened, setReauthOpened] = useState(false);
 
   const router = useRouter();
   const handleLogOut = () => {
@@ -28,12 +30,9 @@ export const ProfileMenu = ({ username }: ProfileMenuProps) => {
     removeAllMessages();
   };
 
-  const handleDeleteAccount = () => {
-    deleteAccount();
-  };
-
   return (
     <>
+      <DeleteAccoutDialog isOpened={isReauthOpened} />
       <Menubar>
         <MenubarMenu>
           <MenubarTrigger>
@@ -48,9 +47,14 @@ export const ProfileMenu = ({ username }: ProfileMenuProps) => {
           <MenubarContent>
             <div className="px-2 py-1.5 text-sm">{username}</div>
             <MenubarSeparator />
-            <MenubarItem onClick={handleLogOut}>Log Out</MenubarItem>
+            <MenubarItem onClick={handleLogOut} className="cursor-pointer">
+              Log Out
+            </MenubarItem>
             <MenubarSeparator />
-            <MenubarItem onClick={handleDeleteAccount} className="text-red-500">
+            <MenubarItem
+              onClick={() => setReauthOpened(true)}
+              className="text-red-500 cursor-pointer"
+            >
               Delete Account
             </MenubarItem>
           </MenubarContent>
