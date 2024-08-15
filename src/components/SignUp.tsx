@@ -16,6 +16,7 @@ import { Input } from "./ui/Input";
 import signUp from "@/firebase/auth/signup";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { PasswordInput } from "./ui/PasswordInput";
 
 export const SignUp = () => {
   const [error, setError] = useState(null);
@@ -40,7 +41,10 @@ export const SignUp = () => {
       <h1 className="text-xl mb-4 font-bold">Sign Up</h1>
       {error && <div className="bg-red-400 p-4 mb-2">{error}</div>}
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-8 max-w-md"
+        >
           <FormField
             control={form.control}
             name="email"
@@ -61,7 +65,7 @@ export const SignUp = () => {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <PasswordInput {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

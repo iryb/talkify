@@ -16,6 +16,7 @@ import { Input } from "./ui/Input";
 import signIn from "@/firebase/auth/signin";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { PasswordInput } from "./ui/PasswordInput";
 
 export const SignIn = () => {
   const router = useRouter();
@@ -35,7 +36,10 @@ export const SignIn = () => {
     <div className="p-4 md:p-8">
       <h1 className="text-xl mb-4 font-bold">Sign In</h1>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-8 max-w-md"
+        >
           <FormField
             control={form.control}
             name="email"
@@ -56,7 +60,7 @@ export const SignIn = () => {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <PasswordInput {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
