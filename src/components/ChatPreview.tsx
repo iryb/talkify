@@ -7,6 +7,7 @@ import { Pencil, X } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { ConfirmDialog } from "./ConfirmDialog";
+import { useRouter } from "next/navigation";
 
 interface ChatPreviewProps extends Chat {
   className?: string;
@@ -21,6 +22,7 @@ export const ChatPreview = ({
 }: ChatPreviewProps) => {
   const { chats, setActiveChat, removeChat } = useChats();
   const { messages, removeAllMessages } = useMessages();
+  const router = useRouter();
 
   const handleDeleteChat = async (id: string) => {
     const deletedChatId = await deleteChat(id);
@@ -39,6 +41,7 @@ export const ChatPreview = ({
         "relative group p-2 hover:bg-slate-300 hover:cursor-pointer transition-all",
         className
       )}
+      onClick={() => router.push("/")}
     >
       {messages.length > 1 ? (
         <ConfirmDialog
