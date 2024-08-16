@@ -17,6 +17,7 @@ import signIn, { signInGoogle } from "@/firebase/auth/signin";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { PasswordInput } from "./ui/PasswordInput";
+import Image from "next/image";
 
 export const SignIn = () => {
   const [error, setError] = useState(null);
@@ -77,8 +78,19 @@ export const SignIn = () => {
           <Button type="submit">Sign In</Button>
         </form>
       </Form>
-      <Button className="mt-2" onClick={handleGoogleSignin}>
-        Sign In with Google
+      <Button
+        className="mt-4 border-slate-800"
+        variant={"outline"}
+        onClick={handleGoogleSignin}
+      >
+        Sign In with
+        <Image
+          className="ml-2"
+          src={`/google.svg`}
+          alt="Google"
+          width="32"
+          height="32"
+        />
       </Button>
       <div className="mt-6 pt-2 border-t">
         Don&apos;t have an account?{" "}
