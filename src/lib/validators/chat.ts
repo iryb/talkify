@@ -4,11 +4,11 @@ export const ChatSchema = z.object({
   id: z.string(),
   lessonTopic: z.string(),
   grammarTopic: z.string(),
-  level: z.string(),
+  level: z.enum(["a1", "a2", "b1", "b2", "c1", "c2"]),
   vocabulary: z.string().optional(),
   questions: z.string().optional(),
-  createdAt: z.string(),
-  modifiedAt: z.string(),
+  createdAt: z.string().optional(),
+  modifiedAt: z.string().optional(),
 });
 
 export type Chat = z.infer<typeof ChatSchema>;
