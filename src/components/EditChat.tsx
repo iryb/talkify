@@ -21,16 +21,14 @@ import {
   SelectValue,
 } from "@/components/ui/Select";
 import { Textarea } from "@/components/ui/Textarea";
-import { addChat } from "@/firebase/chat/chat";
-import { useChats } from "@/context/chats";
 
-export const EditChat = ({ id }: { id: string }) => {
-  //   const { addChat: addNewChat } = useChats();
-  const { chats } = useChats();
-  const { lessonTopic, grammarTopic, level, vocabulary } = chats.find(
-    (chat) => chat.id === id
-  ) as Chat;
-
+export const EditChat = ({
+  id,
+  lessonTopic,
+  grammarTopic,
+  level,
+  vocabulary,
+}: Chat) => {
   const form = useForm<ChatForm>({
     resolver: zodResolver(ChatFormSchema),
     defaultValues: {

@@ -8,6 +8,7 @@ import {
   query,
   where,
   arrayUnion,
+  getDoc,
 } from "firebase/firestore";
 import { auth, db } from "../config";
 import { Chat, ChatForm } from "@/lib/validators/chat";
@@ -35,6 +36,30 @@ export const addChat = async ({
   } catch (error) {
     throw error;
   }
+};
+
+export const getChatById = async ({
+  id,
+}: {
+  id: string;
+}): Promise<Chat | undefined> => {
+  const docRef = doc(db, "chat", id);
+  const docSnap = await getDoc(docRef);
+
+  if (!docSnap.exists()) return;
+
+  const chat: Chat = {
+    id: docSnap.id,
+    lessonTopic: docSnap.data().lessonTopic,
+    grammarTopic: docSnap.data().grammarTopic,
+    level: docSnap.data().level,
+    vocabulary: docSnap.data().vocabulary,
+    questions: docSnap.data().questions,
+    createdAt: docSnap.data().createdAt,
+    modifiedAt: docSnap.data().modifiedAt,
+  };
+
+  return chat;
 };
 
 export const getChats = async ({

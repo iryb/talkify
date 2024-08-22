@@ -8,6 +8,7 @@ type ChatsContextType = {
   chats: Chat[];
   activeChatId: string;
   isChatsListActive: boolean;
+  loading: boolean;
   openChatsList: () => void;
   setActiveChat: (id: string) => void;
   addChat: (chat: Chat) => void;
@@ -19,6 +20,7 @@ export const ChatsContext = createContext<ChatsContextType>({
   chats: [],
   activeChatId: "",
   isChatsListActive: false,
+  loading: true,
   openChatsList: () => {},
   setActiveChat: () => {},
   addChat: () => {},
@@ -31,13 +33,14 @@ export const ChatsProvider = ({ children }: { children: React.ReactNode }) => {
     id: nanoid(),
     lessonTopic: "Weather",
     grammarTopic: "Present Simple",
-    level: "A2",
+    level: "a2",
     createdAt: new Date().toJSON(),
     modifiedAt: new Date().toJSON(),
   };
   const [chats, setChats] = useState<Chat[]>([demoChat]);
   const [activeChatId, setActiveChatId] = useState<string>(demoChat.id);
   const [isChatsListActive, setChatsListActive] = useState(false);
+  const [loading, setLoading] = useState(true);
   const { currentUser } = useAuth();
 
   useEffect(() => {
@@ -47,7 +50,10 @@ export const ChatsProvider = ({ children }: { children: React.ReactNode }) => {
           setChats((prev) => [...prev, ...data]);
           setActiveChatId(data[0].id);
         })
-        .catch((e) => console.log(e));
+        .catch((e) => console.log(e))
+        .finally(() => setLoading(false));
+    } else {
+      setLoading(false);
     }
   }, [currentUser]);
 
@@ -78,6 +84,7 @@ export const ChatsProvider = ({ children }: { children: React.ReactNode }) => {
         chats,
         activeChatId,
         isChatsListActive,
+        loading,
         openChatsList,
         setActiveChat,
         addChat,
