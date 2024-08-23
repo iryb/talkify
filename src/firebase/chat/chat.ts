@@ -9,6 +9,7 @@ import {
   where,
   arrayUnion,
   getDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { auth, db } from "../config";
 import { Chat, ChatForm } from "@/lib/validators/chat";
@@ -33,6 +34,32 @@ export const addChat = async ({
     });
 
     return docRef.id;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const editChat = async ({
+  id,
+  lessonTopic,
+  grammarTopic,
+  level,
+  questions,
+  vocabulary,
+}: ChatForm): Promise<void> => {
+  try {
+    const docRef = doc(db, "chat", id);
+
+    await updateDoc(docRef, {
+      lessonTopic,
+      grammarTopic,
+      level,
+      questions,
+      vocabulary,
+      modifiedAt: new Date().toJSON(),
+    });
+
+    return;
   } catch (error) {
     throw error;
   }
