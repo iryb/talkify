@@ -2,7 +2,6 @@ import {
   collection,
   addDoc,
   getDocs,
-  Timestamp,
   deleteDoc,
   doc,
   query,
@@ -12,7 +11,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { auth, db } from "../config";
-import { Chat, ChatForm } from "@/lib/validators/chat";
+import { Chat, ChatForm, EditChatForm } from "@/lib/validators/chat";
 
 export const addChat = async ({
   lessonTopic,
@@ -46,7 +45,7 @@ export const editChat = async ({
   level,
   questions,
   vocabulary,
-}: Chat): Promise<void> => {
+}: EditChatForm): Promise<void> => {
   try {
     const docRef = doc(db, "chat", id);
 

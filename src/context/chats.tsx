@@ -1,5 +1,5 @@
 import { getChats } from "@/firebase/chat/chat";
-import { Chat } from "@/lib/validators/chat";
+import { Chat, EditChatForm } from "@/lib/validators/chat";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useAuth } from "./auth";
 import { nanoid } from "nanoid";
@@ -12,7 +12,7 @@ type ChatsContextType = {
   openChatsList: () => void;
   setActiveChat: (id: string) => void;
   addChat: (chat: Chat) => void;
-  editChat: (chat: Chat) => void;
+  editChat: (chat: EditChatForm) => void;
   removeChat: (id: string) => void;
   removeChats: () => void;
 };
@@ -64,8 +64,23 @@ export const ChatsProvider = ({ children }: { children: React.ReactNode }) => {
     setChats((prev) => [...prev, chat]);
   };
 
-  const editChat = (chat: Chat) => {
-    setChats((prev) => [...prev.filter((prev) => prev.id !== chat.id), chat]);
+  const editChat = (chat: EditChatForm) => {
+    const { id, lessonTopic, grammarTopic, level, vocabulary, questions } =
+      chat;
+    const updatedChat = {
+      id,
+      lessonTopic,
+      grammarTopic,
+      level,
+      vocabulary,
+      questions,
+      createdAt: new Date().toJSON(),
+      modifiedAt: new Date().toJSON(),
+    };
+    setChats((prev) => [
+      ...prev.filter((prev) => prev.id !== chat.id),
+      updatedChat,
+    ]);
   };
 
   const removeChat = (id: string) => {

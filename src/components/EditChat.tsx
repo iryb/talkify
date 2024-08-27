@@ -44,10 +44,9 @@ export const EditChat = ({
   });
 
   const onSubmit = async (values: ChatForm) => {
-    editChat({ id: id, ...values });
+    editChat({ id, ...values });
     editChatContext({
       id: id,
-      modifiedAt: Date(),
       ...values,
     });
   };
