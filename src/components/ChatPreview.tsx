@@ -18,6 +18,7 @@ export const ChatPreview = ({
   lessonTopic,
   grammarTopic,
   vocabulary,
+  isDemoChat,
   className,
 }: ChatPreviewProps) => {
   const { chats, setActiveChat, removeChat } = useChats();
@@ -55,22 +56,25 @@ export const ChatPreview = ({
           onClick={() => handleChangeChat(id)}
         />
       )}
-
-      <ConfirmDialog
-        className="absolute top-2 right-2 hidden group-hover:block hover:text-white"
-        triggerTitle="Delete chat"
-        text="Do you really want to delete the chat?"
-        confirmCallback={() => handleDeleteChat(id)}
-      >
-        <X />
-      </ConfirmDialog>
-      <a
-        className="absolute top-2 right-10 hidden group-hover:block hover:text-white"
-        title="Edit Chat"
-        href={`/edit-chat/${id}`}
-      >
-        <Pencil />
-      </a>
+      {!isDemoChat && (
+        <>
+          <ConfirmDialog
+            className="absolute top-2 right-2 hidden group-hover:block hover:text-white"
+            triggerTitle="Delete chat"
+            text="Do you really want to delete the chat?"
+            confirmCallback={() => handleDeleteChat(id)}
+          >
+            <X />
+          </ConfirmDialog>
+          <a
+            className="absolute top-2 right-10 hidden group-hover:block hover:text-white"
+            title="Edit Chat"
+            href={`/edit-chat/${id}`}
+          >
+            <Pencil />
+          </a>
+        </>
+      )}
       <h3 className="font-bold">{lessonTopic}</h3>
       <p className="text-sm">Grammar: {grammarTopic}</p>
       <p className="text-sm italic">{vocabulary}</p>

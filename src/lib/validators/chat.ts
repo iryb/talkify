@@ -9,6 +9,7 @@ export const ChatSchema = z.object({
   questions: z.string().optional(),
   createdAt: z.string().optional(),
   modifiedAt: z.string().optional(),
+  isDemoChat: z.boolean().optional(),
 });
 
 export type Chat = z.infer<typeof ChatSchema>;

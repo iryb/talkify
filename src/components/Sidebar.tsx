@@ -41,6 +41,7 @@ export const Sidebar = () => {
                 level,
                 createdAt,
                 modifiedAt,
+                isDemoChat,
               },
               index
             ) => (
@@ -56,6 +57,7 @@ export const Sidebar = () => {
                 level={level}
                 createdAt={createdAt}
                 modifiedAt={modifiedAt}
+                isDemoChat={isDemoChat}
               />
             )
           )}
