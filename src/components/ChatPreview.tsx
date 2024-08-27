@@ -7,6 +7,7 @@ import { Pencil, X } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { ConfirmDialog } from "./ConfirmDialog";
+import { useRouter } from "next/navigation";
 
 interface ChatPreviewProps extends Chat {
   className?: string;
@@ -17,10 +18,12 @@ export const ChatPreview = ({
   lessonTopic,
   grammarTopic,
   vocabulary,
+  isDemoChat,
   className,
 }: ChatPreviewProps) => {
   const { chats, setActiveChat, removeChat } = useChats();
   const { messages, removeAllMessages } = useMessages();
+  const router = useRouter();
 
   const handleDeleteChat = async (id: string) => {
     const deletedChatId = await deleteChat(id);
@@ -39,6 +42,7 @@ export const ChatPreview = ({
         "relative group p-2 hover:bg-slate-300 hover:cursor-pointer transition-all",
         className
       )}
+      onClick={() => router.push("/")}
     >
       {messages.length > 1 ? (
         <ConfirmDialog
@@ -52,22 +56,25 @@ export const ChatPreview = ({
           onClick={() => handleChangeChat(id)}
         />
       )}
-
-      <ConfirmDialog
-        className="absolute top-2 right-2 hidden group-hover:block hover:text-white"
-        triggerTitle="Delete chat"
-        text="Do you really want to delete the chat?"
-        confirmCallback={() => handleDeleteChat(id)}
-      >
-        <X />
-      </ConfirmDialog>
-      <a
-        className="absolute top-2 right-10 hidden group-hover:block hover:text-white"
-        title="Edit Chat"
-        href="#"
-      >
-        <Pencil />
-      </a>
+      {!isDemoChat && (
+        <>
+          <ConfirmDialog
+            className="absolute top-2 right-2 hidden group-hover:block hover:text-white"
+            triggerTitle="Delete chat"
+            text="Do you really want to delete the chat?"
+            confirmCallback={() => handleDeleteChat(id)}
+          >
+            <X />
+          </ConfirmDialog>
+          <a
+            className="absolute top-2 right-10 hidden group-hover:block hover:text-white"
+            title="Edit Chat"
+            href={`/edit-chat/${id}`}
+          >
+            <Pencil />
+          </a>
+        </>
+      )}
       <h3 className="font-bold">{lessonTopic}</h3>
       <p className="text-sm">Grammar: {grammarTopic}</p>
       <p className="text-sm italic">{vocabulary}</p>

@@ -1,5 +1,5 @@
 import { getChats } from "@/firebase/chat/chat";
-import { Chat } from "@/lib/validators/chat";
+import { Chat, EditChatForm } from "@/lib/validators/chat";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useAuth } from "./auth";
 import { nanoid } from "nanoid";
@@ -8,9 +8,11 @@ type ChatsContextType = {
   chats: Chat[];
   activeChatId: string;
   isChatsListActive: boolean;
+  loading: boolean;
   openChatsList: () => void;
   setActiveChat: (id: string) => void;
   addChat: (chat: Chat) => void;
+  editChat: (chat: EditChatForm) => void;
   removeChat: (id: string) => void;
   removeChats: () => void;
 };
@@ -19,9 +21,11 @@ export const ChatsContext = createContext<ChatsContextType>({
   chats: [],
   activeChatId: "",
   isChatsListActive: false,
+  loading: true,
   openChatsList: () => {},
   setActiveChat: () => {},
   addChat: () => {},
+  editChat: () => {},
   removeChat: () => {},
   removeChats: () => {},
 });
@@ -31,13 +35,15 @@ export const ChatsProvider = ({ children }: { children: React.ReactNode }) => {
     id: nanoid(),
     lessonTopic: "Weather",
     grammarTopic: "Present Simple",
-    level: "A2",
+    level: "a2",
     createdAt: new Date().toJSON(),
     modifiedAt: new Date().toJSON(),
+    isDemoChat: true,
   };
   const [chats, setChats] = useState<Chat[]>([demoChat]);
   const [activeChatId, setActiveChatId] = useState<string>(demoChat.id);
   const [isChatsListActive, setChatsListActive] = useState(false);
+  const [loading, setLoading] = useState(true);
   const { currentUser } = useAuth();
 
   useEffect(() => {
@@ -47,12 +53,34 @@ export const ChatsProvider = ({ children }: { children: React.ReactNode }) => {
           setChats((prev) => [...prev, ...data]);
           setActiveChatId(data[0].id);
         })
-        .catch((e) => console.log(e));
+        .catch((e) => console.log(e))
+        .finally(() => setLoading(false));
+    } else {
+      setLoading(false);
     }
   }, [currentUser]);
 
   const addChat = (chat: Chat) => {
     setChats((prev) => [...prev, chat]);
+  };
+
+  const editChat = (chat: EditChatForm) => {
+    const { id, lessonTopic, grammarTopic, level, vocabulary, questions } =
+      chat;
+    const updatedChat = {
+      id,
+      lessonTopic,
+      grammarTopic,
+      level,
+      vocabulary,
+      questions,
+      createdAt: new Date().toJSON(),
+      modifiedAt: new Date().toJSON(),
+    };
+    setChats((prev) => [
+      ...prev.filter((prev) => prev.id !== chat.id),
+      updatedChat,
+    ]);
   };
 
   const removeChat = (id: string) => {
@@ -78,9 +106,11 @@ export const ChatsProvider = ({ children }: { children: React.ReactNode }) => {
         chats,
         activeChatId,
         isChatsListActive,
+        loading,
         openChatsList,
         setActiveChat,
         addChat,
+        editChat,
         removeChat,
         removeChats,
       }}
