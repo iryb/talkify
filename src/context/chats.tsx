@@ -12,6 +12,7 @@ type ChatsContextType = {
   openChatsList: () => void;
   setActiveChat: (id: string) => void;
   addChat: (chat: Chat) => void;
+  editChat: (chat: Chat) => void;
   removeChat: (id: string) => void;
   removeChats: () => void;
 };
@@ -24,6 +25,7 @@ export const ChatsContext = createContext<ChatsContextType>({
   openChatsList: () => {},
   setActiveChat: () => {},
   addChat: () => {},
+  editChat: () => {},
   removeChat: () => {},
   removeChats: () => {},
 });
@@ -36,6 +38,7 @@ export const ChatsProvider = ({ children }: { children: React.ReactNode }) => {
     level: "a2",
     createdAt: new Date().toJSON(),
     modifiedAt: new Date().toJSON(),
+    isDemoChat: true,
   };
   const [chats, setChats] = useState<Chat[]>([demoChat]);
   const [activeChatId, setActiveChatId] = useState<string>(demoChat.id);
@@ -59,6 +62,10 @@ export const ChatsProvider = ({ children }: { children: React.ReactNode }) => {
 
   const addChat = (chat: Chat) => {
     setChats((prev) => [...prev, chat]);
+  };
+
+  const editChat = (chat: Chat) => {
+    setChats((prev) => [...prev.filter((prev) => prev.id !== chat.id), chat]);
   };
 
   const removeChat = (id: string) => {
@@ -88,6 +95,7 @@ export const ChatsProvider = ({ children }: { children: React.ReactNode }) => {
         openChatsList,
         setActiveChat,
         addChat,
+        editChat,
         removeChat,
         removeChats,
       }}

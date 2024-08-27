@@ -21,6 +21,8 @@ import {
   SelectValue,
 } from "@/components/ui/Select";
 import { Textarea } from "@/components/ui/Textarea";
+import { editChat } from "@/firebase/chat/chat";
+import { useChats } from "@/context/chats";
 
 export const EditChat = ({
   id,
@@ -29,6 +31,7 @@ export const EditChat = ({
   level,
   vocabulary,
 }: Chat) => {
+  const { editChat: editChatContext } = useChats();
   const form = useForm<ChatForm>({
     resolver: zodResolver(ChatFormSchema),
     defaultValues: {
@@ -41,13 +44,12 @@ export const EditChat = ({
   });
 
   const onSubmit = async (values: ChatForm) => {
-    // const newChatId = await editChat(values);
-    // addNewChat({
-    //   id: newChatId,
-    //   createdAt: Date(),
-    //   modifiedAt: Date(),
-    //   ...values,
-    // });
+    editChat({ id: id, ...values });
+    editChatContext({
+      id: id,
+      modifiedAt: Date(),
+      ...values,
+    });
   };
 
   return (
