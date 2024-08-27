@@ -2,7 +2,12 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Chat, ChatForm, ChatFormSchema } from "@/lib/validators/chat";
+import {
+  Chat,
+  ChatForm,
+  ChatFormSchema,
+  EditChatForm,
+} from "@/lib/validators/chat";
 import { Button } from "@/components/ui/Button";
 import {
   Form,
@@ -30,7 +35,7 @@ export const EditChat = ({
   grammarTopic,
   level,
   vocabulary,
-}: Chat) => {
+}: EditChatForm) => {
   const { editChat: editChatContext } = useChats();
   const form = useForm<ChatForm>({
     resolver: zodResolver(ChatFormSchema),
