@@ -46,7 +46,7 @@ export const editChat = async ({
   level,
   questions,
   vocabulary,
-}: ChatForm): Promise<void> => {
+}: Chat): Promise<void> => {
   try {
     const docRef = doc(db, "chat", id);
 
