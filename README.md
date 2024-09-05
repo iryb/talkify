@@ -5,16 +5,17 @@ Talkify is a speaking partner to train English. Answer the questions by voice an
 https://talkify-two.vercel.app/
 
 ## Features
-- speech recognition and synthesis
-- voice chat with OpenAI
-- ability to create customized chats based on: Conversation topic, Grammar, English level, Vocabulary, Questions
-- feedback about user performance after conversation
+- Speech recognition and synthesis
+- Voice chat with OpenAI
+- Ability to create customized chats based on: Conversation topic, Grammar, English level, Vocabulary, Questions
+- Feedback about user performance after conversation
+- Authentication (email, Google)
 
 ## Tech Stack
 - Next.js
 - Typescript
 - React
-- React Contect API
+- React Context API
 - React Speech Recognition
 - Open AI
 - Firestore
