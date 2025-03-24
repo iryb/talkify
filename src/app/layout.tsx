@@ -1,6 +1,7 @@
 "use client";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import "react-calendar-heatmap/dist/styles.css";
 import { MessagesProvider } from "@/context/messages";
 import { Header } from "@/components/Header";
 import { Sidebar } from "@/components/Sidebar";
