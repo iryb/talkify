@@ -1,14 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/Button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/Form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/Form";
 import { signUp as SignUpProps, SignUpSchema } from "@/lib/validators/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -19,6 +12,8 @@ import { useRouter } from "next/navigation";
 import { PasswordInput } from "./ui/PasswordInput";
 import Image from "next/image";
 import { signInGoogle } from "@/firebase/auth/signin";
+import { RadioGroup, RadioGroupItem } from "./ui/RadioGroup";
+import { Label } from "./ui/Label";
 
 export const SignUp = () => {
   const [error, setError] = useState(null);
@@ -49,10 +44,7 @@ export const SignUp = () => {
       <h1 className="text-xl mb-4 font-bold">Sign Up</h1>
       {error && <div className="bg-red-400 p-4 mb-2">{error}</div>}
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 max-w-md"
-        >
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 max-w-md">
           <FormField
             control={form.control}
             name="email"
@@ -79,22 +71,24 @@ export const SignUp = () => {
               </FormItem>
             )}
           />
+
+          <RadioGroup defaultValue="option-one">
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="option-one" id="option-one" />
+              <Label htmlFor="option-one">Teacher</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="option-two" id="option-two" />
+              <Label htmlFor="option-two">Student</Label>
+            </div>
+          </RadioGroup>
+
           <Button type="submit">Sign Up</Button>
         </form>
       </Form>
-      <Button
-        className="mt-4 border-slate-800"
-        variant={"outline"}
-        onClick={handleGoogleSignup}
-      >
+      <Button className="mt-4 border-slate-800" variant={"outline"} onClick={handleGoogleSignup}>
         Sign Up with
-        <Image
-          className="ml-2"
-          src={`/google.svg`}
-          alt="Google"
-          width="32"
-          height="32"
-        />
+        <Image className="ml-2" src={`/google.svg`} alt="Google" width="32" height="32" />
       </Button>
       <div className="mt-6 pt-2 border-t">
         Already have an account?{" "}
